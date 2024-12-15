@@ -18,6 +18,11 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@langchain/community": "^0.3.19",
+    "@langchain/core": "^0.3.23",
+    "@langchain/langgraph": "^0.2.33",
+    "@langchain/openai": "^0.3.14",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "inquirer": "^12.2.0",
     "readline-sync": "^1.4.10"

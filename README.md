@@ -8,7 +8,7 @@ This experimental repository delves into the use of Large Language Models (LLMs)
 
 The project is inspired by the need to make structured entities—like database entries—equally retrievable alongside unstructured documents within a RAG framework.
 
-To make the exploration concrete, this repo uses an AI social media management and marketing application as a practical example. This application generates and publishes social media content to platforms like Twitter, Facebook, and LinkedIn.
+To make the exploration concrete, this repo uses an AI social media management and marketing application as a practical example. This application generates and publishes social media content to platforms like Twitter, Facebook, and LinkedIn. It uses mongoDB as its main transactional DB.
 
 #### Objectives
 
@@ -34,6 +34,12 @@ The AI social media management and marketing application includes:
 
 This combination of entities provides a diverse dataset for exploring how LLMs retrieve information across multiple data types.
 
+#### Tech stack
+
+- LangChain/Graph: For building RAG pipelines.
+- OpenAI API: To leverage state-of-the-art LLMs.
+- MongoDB: transactional DB
+
 ---
 
 ### Questions to Explore
@@ -43,7 +49,16 @@ This combination of entities provides a diverse dataset for exploring how LLMs r
 
 ---
 
-### Tech Stack
+### Findings
 
-- LangChain: For building RAG pipelines.
-- OpenAI API: To leverage state-of-the-art LLMs.
+#### MongoDB vector search
+
+MongoDB enable vector search queries by creating `vectorSearch` type index. But index is created per collection. And it feels sort of 'manual' and troublesome to query each collection to find all entities which matches the keyword as opposed to having a single vector store where all related entities can be retrieved in a single query.
+
+Pros:
+
+- Assuming one uses mongoDB as its main DB, application data gets auto-indexed once vector index is created, reducing the need to manually create embedded and storing it in separate vectorDB.
+
+Cons:
+
+- Need to query each collection to find all related entities.
