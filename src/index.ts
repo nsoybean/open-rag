@@ -1,12 +1,6 @@
 import { startServer } from "./server";
 import reader from "readline-sync";
-import {
-  StateGraph,
-  MessagesAnnotation,
-  END,
-  START,
-} from "@langchain/langgraph";
-import { agent } from "./graph";
+import { agent } from "./agent";
 
 async function main() {
   // start server
