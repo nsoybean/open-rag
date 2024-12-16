@@ -55,28 +55,19 @@ This combination of entities provides a diverse dataset for exploring how LLMs r
 
 MongoDB enable vector search queries by creating `vectorSearch` type index. But index is created per collection. And it feels sort of 'manual' and troublesome to query each collection to find all entities which matches the keyword as opposed to having a single vector store where all related entities can be retrieved in a single query.
 
-Pros:
-
-- Application data gets auto-indexed once vector index is created, reducing the need to manually create embedded and storing it in separate vectorDB.
-- Able to know the context of retrieved data by looking at collection name.
-
-Cons:
-
-- Need to query each collection to find all related entities.
+| Pros                                                                                                                                                | Cons                                                        |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Application data gets auto-indexed once vector index is created, reducing the need to manually create embedded and storing it in separate vectorDB. | Need to query each collection to find all related entities. |
+| Able to know the context of retrieved data by looking at collection name.                                                                           | -                                                           |
 
 #### OpenAI Assistant
 
 OpenAI supports assistant and vector store. This provides some abstractions and ease-of-setup as compared to managing our own vector store. But there may be some limitations which needs to be confirmed and resolved:
 
-Pros:
-
-- easy set up
-- appropriate as a knowledge base (unstructured data) for LLM.
-
-Cons:
-
-- vector store is non accessible outside chat. Internal to LLM.
-- cannot store structured data as it loses context.
+| Pros                                                         | Cons                                                          |
+| ------------------------------------------------------------ | ------------------------------------------------------------- |
+| easy set up                                                  | vector store is non accessible outside chat. Internal to LLM. |
+| appropriate as a knowledge base (unstructured data) for LLM. | cannot store structured data as it loses context.             |
 
 Limitations:
 
@@ -84,33 +75,28 @@ Limitations:
 - Can we determine the splitting and chunking behaviour of unstructured data. If not, how do we handle semi-structured data such as csv or tables in PDF.
 - Putting structured data in vector store loses its business context. For eg, if we index the caption of the following social post, the knowledge base will include cat but unaware that this cat was referred to from a social post. Whats the chance that this chunk will be retrieved when user ask "Retrieve my past social posts where i mentioned about cat".
 
-```
-title: "Come to our cat cafe”
-caption: "Who needs a therapist when you have a cat? 🐾✨ The ultimate cuddle buddy and master of mood-lifting purrs”
-```
+  ```
+  title: "Come to our cat cafe”
+  caption: "Who needs a therapist when you have a cat? 🐾✨ The ultimate cuddle buddy and master of mood-lifting purrs”
+  ```
 
 #### External Vector store
 
 Separate vector store. Options include pinecone, clickhouse etc.
 
-Pros:
-
-- more control over the indexing/ storing of embeddings in vectorDB
-
-Cons:
-
-- additional step to index and stored application data in separate vector db.
+| Pros                                                              | Cons                                                                        |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| more control over the indexing/ storing of embeddings in vectorDB | additional step to index and stored application data in separate vector db. |
 
 Consideration:
 
 - whether to store all application data in same table with appropriate metatag containing context of application data. So that retrival can be done with single query. Single vector store concept. eg.
-
-```
-{
-   embeddings: XXX,
-   metatags: {
-       entity: 'socialMediaPost' | 'writingStyle' | 'knowledgeBase'
-       application-id: YYY // only for application data, this references entity in application database
-   }
-}
-```
+  ```
+  {
+  embeddings: XXX,
+  metatags: {
+  entity: 'socialMediaPost' | 'writingStyle' | 'knowledgeBase'
+  application-id: YYY // only for application data, this references entity in application database
+  }
+  }
+  ```
