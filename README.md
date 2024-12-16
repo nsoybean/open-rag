@@ -71,10 +71,12 @@ OpenAI supports assistant and vector store. This provides some abstractions and 
 Pros:
 
 - easy set up
+- appropriate as a knowledge base (unstructured data) for LLM.
 
 Cons:
 
 - vector store is non accessible outside chat. Internal to LLM.
+- cannot store structured data as it loses context.
 
 Limitations:
 
