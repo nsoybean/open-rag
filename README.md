@@ -49,7 +49,7 @@ This combination of entities provides a diverse dataset for exploring how LLMs r
 
 ---
 
-### Findings
+### Learnings
 
 #### MongoDB vector search
 
@@ -58,7 +58,21 @@ MongoDB enable vector search queries by creating `vectorSearch` type index. But 
 Pros:
 
 - Assuming one uses mongoDB as its main DB, application data gets auto-indexed once vector index is created, reducing the need to manually create embedded and storing it in separate vectorDB.
+- Able to know the context of retrieved data by looking at collection name.
 
 Cons:
 
 - Need to query each collection to find all related entities.
+
+#### OpenAI Assistant
+
+OpenAI supports assistant and vector store. This provides some abstractions and ease-of-setup as compared to managing our own vector store. But there may be some limitations which needs to be confirmed and resolved:
+
+- Are we able to query assitant's vector store independently? This allows us to get structured data/ augment retrieved data.
+- Can we determine the splitting and chunking behaviour of unstructured data. If not, how do we handle semi-structured data such as csv or tables in PDF.
+- Putting structured data in vector store loses its business context. For eg, if we index the caption of the following social post, the knowledge base will include cat but unaware that this cat was referred to from a social post. Whats the chance that this chunk will be retrieved when user ask "Retrieve my past social posts where i mentioned about cat".
+
+  ```
+  title: "Come to our cat cafe”
+  caption: "Who needs a therapist when you have a cat? 🐾✨ The ultimate cuddle buddy and master of mood-lifting purrs”
+  ```
