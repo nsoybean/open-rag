@@ -84,10 +84,10 @@ Limitations:
 - Can we determine the splitting and chunking behaviour of unstructured data. If not, how do we handle semi-structured data such as csv or tables in PDF.
 - Putting structured data in vector store loses its business context. For eg, if we index the caption of the following social post, the knowledge base will include cat but unaware that this cat was referred to from a social post. Whats the chance that this chunk will be retrieved when user ask "Retrieve my past social posts where i mentioned about cat".
 
-  ```
-  title: "Come to our cat cafe”
-  caption: "Who needs a therapist when you have a cat? 🐾✨ The ultimate cuddle buddy and master of mood-lifting purrs”
-  ```
+```
+title: "Come to our cat cafe”
+caption: "Who needs a therapist when you have a cat? 🐾✨ The ultimate cuddle buddy and master of mood-lifting purrs”
+```
 
 #### External Vector store
 
