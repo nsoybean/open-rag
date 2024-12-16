@@ -1,69 +1,57 @@
-import { startServer } from "./server";
-import reader from "readline-sync";
+import readline from "readline";
 import { agent } from "./agent";
 import { chat } from "./chat";
 import { initAndSeedDatabase, stopDatabase } from "./database";
+import { startServer } from "./server";
 
-(async function main() {
-  // start server
-  //   startServer();
+// Create an async interface for user input
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-  // init
+// Helper function to ask questions asynchronously
+function askQuestion(query: string): Promise<string> {
+  return new Promise((resolve) => rl.question(query, resolve));
+}
+
+// CLI interface
+async function main() {
+  // Initialize the database
   await initAndSeedDatabase();
-
   console.log("Open Rag is online");
 
   let inputQn: string | null = null;
-  //  agent
-  // do {
-  //   inputQn = reader.question("Input question: ");
-  //   if (!inputQn) {
-  //     break;
-  //   }
 
-  //   // example with a single tool call
-  //   const stream = await agent.stream(
-  //     {
-  //       messages: [{ role: "user", content: inputQn }],
-  //     },
-  //     {
-  //       streamMode: "values",
-  //     }
-  //   );
-  //   for await (const chunk of stream) {
-  //     const lastMessage = chunk.messages[chunk.messages.length - 1];
-  //     const type = lastMessage._getType();
-  //     const content = lastMessage.content;
-  //     const toolCalls = lastMessage.tool_calls;
-  //     console.dir(
-  //       {
-  //         type,
-  //         content,
-  //         toolCalls,
-  //       },
-  //       { depth: null }
-  //     );
-  //   }
-  // } while (inputQn);
+  try {
+    do {
+      inputQn = await askQuestion("Input question: ");
+      if (!inputQn) break;
 
-  //  chat
-  do {
-    inputQn = reader.question("Input question: ");
-    if (!inputQn) {
-      break;
-    }
+      const response = await chat.invoke({
+        input: inputQn,
+      });
 
-    const response = await chat.invoke({
-      input: inputQn,
-    });
+      console.log("Response:", response);
+    } while (inputQn);
+  } finally {
+    // Ensure the readline interface closes properly
+    rl.close();
+    await stopDatabase();
+    console.log("Main interaction finished.");
+  }
+}
 
-    console.log("Response:", response);
-  } while (inputQn);
-})();
+// Run main() and startServer() concurrently
+function run() {
+  // Start the server
+  startServer();
 
-// terminate
-process.on("SIGINT", async () => {
-  console.log("Open Rag is shutting down");
-  await stopDatabase();
-  process.exit(1);
-});
+  // Run the main interaction logic
+  main().catch((err) => {
+    console.error("Error in main:", err);
+    process.exit(1);
+  });
+}
+
+run();

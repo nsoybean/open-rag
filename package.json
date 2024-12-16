@@ -26,7 +26,6 @@
     "express": "^4.21.2",
     "inquirer": "^12.2.0",
     "mongodb-memory-server": "^10.1.2",
-    "mongoose": "^8.9.0",
-    "readline-sync": "^1.4.10"
+    "mongoose": "^8.9.0"
   }
 }
